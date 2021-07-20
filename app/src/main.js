@@ -1,32 +1,40 @@
-const $ = require('jquery')
 
-function getPageList() {
-    $('h1').remove()
-    $.get('./api', (data) => {
-        data.forEach(el => {
-            $('body').append("<h1>" + el + "</h1>")
-        })
-    }, "JSON")
-}
-getPageList()
+const Vue = require("vue")
+const axios = require("axios")
 
-$('.create').on('click', () => {
-    $.post('./api/createHtmlPage.php', {
-        'addName': $('.create-input').val()
-    }, data => {
-        getPageList()
-    })
-        .fail((er) => {
-            alert(er.statusText)
-        })
-})
-$('.delete').on('click', () => {
-    $.post('./api/createHtmlPage.php', {
-        'delName': $('.delete-input').val()
-    }, data => {
-        getPageList()
-    })
-        .fail(( er) => {
-            alert(er.statusText)
-        })
+new Vue({
+    el: '#app',
+    data: {
+        'pageList': [],
+        'newPageName': ''
+    },
+    created() {
+        this.updatePageList()
+    },
+    methods: {
+        createNewPage() {
+                axios({
+                    method: "POST",
+                    url: './api/createHtmlPage.php',
+                    data: {
+                        "addName": this.newPageName
+                    },
+                    // headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+                })
+                .then(() => this.updatePageList())
+            this.newPageName = ''
+        },
+        updatePageList() {
+            axios
+                .get('./api/')
+                .then(res => {
+                    this.pageList = res.data
+                })
+        },
+        deletePage(page) {
+            axios
+                .post('./api/deletePage.php', {"delName": page})
+                .then(() => this.updatePageList())
+        }
+    }
 })

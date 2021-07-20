@@ -12,6 +12,9 @@
   ],
   "author": "Dmitry Hrulev",
   "license": "ISC",
+  "browser": {
+    "vue": "vue/dist/vue.common.js"
+  },
   "devDependencies": {
     "@babel/core": "^7.14.6",
     "@babel/preset-env": "^7.14.7",
@@ -23,6 +26,8 @@
     "vinyl-source-stream": "^2.0.0"
   },
   "dependencies": {
-    "jquery": "^3.6.0"
+    "axios": "^0.21.1",
+    "jquery": "^3.6.0",
+    "vue": "^2.6.14"
   }
 }

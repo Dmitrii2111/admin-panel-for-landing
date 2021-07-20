@@ -1,4 +1,5 @@
 <?php
+$_POST = json_decode(file_get_contents('php://input'), true);
 
 if ($_POST["addName"]) {
   $newHtmlFile = $_POST["addName"];
@@ -9,16 +10,10 @@ if ($_POST["addName"]) {
     fopen($newFullNameFile, 'w');
     echo "New file " . $newHtmlFile . " created";
   }
+} else {
+  echo "not working";
 }
 
-if($_POST['delName']) {
-  $delHtmlFile = $_POST["delName"];
-  $newDelHtmlFile = "../../" . $delHtmlFile . ".html";
-  if (file_exists($newDelHtmlFile)) {
-    unlink($newDelHtmlFile);
-  } else {
-    header('HTTP/1.0 404 Not Found');
-  }
-}
+
 
 
