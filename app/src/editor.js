@@ -1,5 +1,6 @@
 const axios = require('axios')
 const DOMHelper = require('./dom-helper')
+const EditorText = require('./editor-text')
 require('./ifreme-load')
 module.exports = class Editor {
   constructor() {
@@ -19,18 +20,29 @@ module.exports = class Editor {
       .then((html) => axios.post('./api/saveTempPage.php', { html }))
       .then(() => this.iframe.load('../temp.html'))
       .then(() => this.enableEditing())
+      .then(() => this.injectStyles())
+
   }
   enableEditing() {
-    this.iframe.contentDocument.body.querySelectorAll("text-editor").forEach(e => {
-      e.contentEditable = true
-      e.addEventListener('input', () => {
-        this.onTextEdit(e)
-      })
+    this.iframe.contentDocument.body.querySelectorAll("text-editor").forEach(element => {
+      const id = element.getAttribute('nodeid')
+      const virtualElement = this.virtualDom.body.querySelector(`[nodeid="${id}"]`)
+      new EditorText(element, virtualElement)
     })
   }
-  onTextEdit(element) {
-    const id = element.getAttribute('nodeid')
-    this.virtualDom.body.querySelector(`[nodeid="${id}"]`).innerHTML = element.innerHTML
+  injectStyles() {
+    const style = this.iframe.contentDocument.createElement('style')
+    style.innerHTML = `
+      text-editor:hover {
+        outline: 3px solid orange;
+        outline-offset: 8px; 
+      }
+      text-editor:focus {
+        outline: 3px solid green;
+        outline-offset: 8px; 
+      }
+    `
+    this.iframe.contentDocument.head.appendChild(style)
   }
   save() {
     const newDom = this.virtualDom.cloneNode(this.virtualDom)
