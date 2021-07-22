@@ -1,48 +1,33 @@
-
-// const Vue = require("vue")
-// const axios = require("axios")
-//
-// new Vue({
-//     el: '#app',
-//     data: {
-//         'pageList': [],
-//         'newPageName': ''
-//     },
-//     created() {
-//         this.updatePageList()
-//     },
-//     methods: {
-//         createNewPage() {
-//                 axios({
-//                     method: "POST",
-//                     url: './api/createHtmlPage.php',
-//                     data: {
-//                         "addName": this.newPageName
-//                     },
-//                     // headers: {'Content-Type': 'application/x-www-form-urlencoded'}
-//                 })
-//                 .then(() => this.updatePageList())
-//             this.newPageName = ''
-//         },
-//         updatePageList() {
-//             axios
-//                 .get('./api/')
-//                 .then(res => {
-//                     this.pageList = res.data
-//                 })
-//         },
-//         deletePage(page) {
-//             axios
-//                 .post('./api/deletePage.php', {"delName": page})
-//                 .then(() => this.updatePageList())
-//         }
-//     }
-// })
-
-
+const UIkit = require('uikit')
+const Vue = require('vue')
 const Editor = require('./editor')
 
 window.editor = new Editor()
-window.onload = () => {
-    window.editor.open('index.html')
-}
+
+
+new Vue({
+    el: "#app",
+    data: {
+      showLoader: true
+    },
+    methods: {
+        onBtnSave () {
+            this.showLoader = true
+            window.editor.save(
+              () => {
+                    this.showLoader = false
+                    UIkit.notification({message: 'Страница опубликована!', status: 'success'})
+                },
+              () => {
+                    this.showLoader = false
+                    UIkit.notification({message: 'Ошибка сохраниения', status: 'danger'})
+                }
+              )
+        }
+    },
+    created() {
+        window.editor.open('index.html', () => {
+            this.showLoader = false
+        })
+    }
+})
