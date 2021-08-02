@@ -14,8 +14,29 @@
         <div class="loader" :class="{'active' : showLoader}">
             <span uk-spinner="ratio: 4.5"></span>
         </div>
+
         <div class="panel">
+            <div>
+                <button class="uk-button uk-button-primary" type="button" uk-toggle="target: #offcanvas-nav">Страницы</button>
+                <button class="uk-button uk-button-primary" uk-toggle="target: #modal-meta">META</button>
+            </div>
+
             <button class="uk-button uk-button-primary" uk-toggle="target: #modal-save">Опубликовать</button>
+
+
+            <div id="offcanvas-nav" uk-offcanvas="overlay: true">
+                <div class="uk-offcanvas-bar">
+
+                    <ul class="uk-nav uk-nav-default">
+                        <li class="uk-nav-header" >Страницы</li>
+                        <li v-for="link in pageList"><a class="uk-offcanvas-close" href="" @click="openPage(link.link)">{{ link.name }}</a></li>
+                        <li class="uk-nav-divider"></li>
+<!--                        <li class="uk-nav-header" >Востановить версию</li>-->
+<!--                        <li v-if="backupList.length < 1">Старых версий не найдено</li>-->
+<!--                        <li class="backup-link" v-for="backup in backupList" v-else><a class="uk-offcanvas-close" href="" @click="restoreBackup(backup)">{{ backup.page }}</a> <span>от {{backup.dateChanges}}</span></li>-->
+                    </ul>
+                </div>
+            </div>
         </div>
 
         <div id="modal-save" uk-modal>
@@ -25,6 +46,26 @@
                 <p class="uk-text-right">
                     <button class="uk-button uk-button-default uk-modal-close" type="button">Отмена</button>
                     <button class="uk-button uk-button-primary uk-modal-close" type="button" @click="onBtnSave">Сохранить</button>
+                </p>
+            </div>
+        </div>
+        <div id="modal-meta" uk-modal>
+            <div class="uk-modal-dialog uk-modal-body">
+                <h2 class="uk-modal-title">редактирование МЕТА тегов</h2>
+                <form>
+                    <div class="uk-margin">
+                        <input class="uk-input" type="text" placeholder="Title" v-model="meta.title">
+                    </div>
+                    <div class="uk-margin">
+                        <textarea class="uk-textarea" rows="5" placeholder="Ключевые" v-model="meta.keywords"></textarea>
+                    </div>
+                    <div class="uk-margin">
+                        <textarea class="uk-textarea" rows="5" placeholder="Описание" v-model="meta.description"></textarea>
+                    </div>
+                </form>
+                <p class="uk-text-right">
+                    <button class="uk-button uk-button-default uk-modal-close" type="button">Отмена</button>
+                    <button class="uk-button uk-button-primary uk-modal-close" type="button" @click="applyMeta">Применить</button>
                 </p>
             </div>
         </div>

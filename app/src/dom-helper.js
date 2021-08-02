@@ -23,7 +23,6 @@ module.exports = class DOMHelper {
       wrapper.contentEditable = true
       wrapper.setAttribute('nodeid', i)
     })
-    console.log(dom)
     return dom
   }
   static unwrapTextNodes(dom) {

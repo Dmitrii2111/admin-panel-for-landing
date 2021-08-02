@@ -22,34 +22,51 @@ iframe {
  width: 100%;
  height: calc(100vh - #{$panel_height});
 }
-.panel{
+.panel {
  display: flex;
  padding: 12px;
- justify-content: flex-end;
+ justify-content: space-between;
+ width: 100%;
  height: $panel_height;
  box-sizing: border-box;
  border-bottom: 1px solid black;
 }
 .loader{
- position: fixed;
- display: flex;
- justify-content: center;
- align-items: center;
- top: 0;
- left: 0;
- width: 100%;
- height: 100vh;
- background: rgba( black, .5);
- visibility: hidden;
- opacity: 0;
- transition: all .4s;
+position: fixed;
+display: flex;
+justify-content: center;
+align-items: center;
+top: 0;
+left: 0;
+width: 100%;
+height: 100vh;
+background: rgba( black, .5);
+visibility: hidden;
+opacity: 0;
+transition: all .4s;
 
- &.active {
-  visibility: visible;
-  opacity: 1;
- }
+&.active {
+visibility: visible;
+opacity: 1;
+}
 }
 span.uk-icon{
- color: #fff;
- fill: #ffffff;
+color: #fff;
+fill: #ffffff;
+}
+
+.uk-offcanvas-page, .uk-offcanvas-container {
+overflow-x: unset;
+}
+.uk-offcanvas-close {
+ position: unset;
+ z-index: unset;
+ top: unset;
+ right: unset;
+ padding: unset;
+}
+.backup-link {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
