@@ -34,4 +34,13 @@ module.exports = class DOMHelper {
     const serializer = new XMLSerializer()
     return serializer.serializeToString(dom)
   }
+  static wrapImages(dom) {
+    dom.body.querySelectorAll('img').forEach((img, index) => {
+      img.setAttribute('editableimgid', index)
+    })
+    return dom
+  }
+  static unwrapImages(dom) {
+    dom.body.querySelectorAll('[editableimgid]').forEach(img => img.removeAttribute('editableimgid'))
+  }
 }
